@@ -3,12 +3,20 @@
 
     function siguientenivel(nivelActual){
         if(nivelActual==niveles){
-            return alert('Ganaste')
+           // return alert('Ganaste')
+           return swal({
+               title: 'Ganaste',
+               type: 'success'
+           })
         }
-        alert(`Nivel ${nivelActual+1}`)
-
+        //alert(`Nivel ${nivelActual+1}`)
+        swal({
+            timer: 1000,
+            title: `Nivel ${nivelActual+1}`,
+            showConfirmButton: false
+        })
         for(let i=0; i<= nivelActual; i++){
-            setTimeout(()=>activate(teclas[i]), 1000*(i+1))
+            setTimeout(()=>activate(teclas[i]), 1000*(i+1)+1000)
         }
         let i=0;
         let teclaActual = teclas[i]
@@ -25,7 +33,20 @@
             } else {
                 activate(ev.keyCode, {fail: true})
                 window.removeEventListener('keydown', onkeydown)
-                alert('Perdiste :(')
+                //alert('Perdiste :(')
+                swal({
+                    title: 'Perdiste',
+                    text: 'Quieres jugar de nuevo?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si',
+                    cancelButtonText: 'No',
+                    closeOnConfirm: 'true'
+                }, function(ok){
+                    if(ok){
+                        let teclas = generarTeclas(niveles);
+                        siguientenivel(0)
+                    }
+                })
             }
         }
     }
